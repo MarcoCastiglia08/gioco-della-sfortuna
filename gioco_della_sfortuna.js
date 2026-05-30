@@ -131,3 +131,63 @@ const nuovoRound = () => {
   setTimer(30);
   setFase("round");
 };
+
+useEffect(() => {
+  if (fase !== "round") return;
+
+  if (timer === 0) {
+    setVite((v) => v - 1);
+    setMessaggio("Tempo scaduto! Hai perso una vita");
+    setFase("risultato");
+    return;
+  }
+
+  const intervallo = setInterval(() => {
+    setTimer((t) => t - 1);
+  }, 1000);
+
+  return () => clearInterval(intervallo);
+}, [fase, timer]);
+
+const controlla = (posizione) => {
+  const ordine = [...mano, cartaRound].sort(
+    (a, b) => a.indice - b.indice
+  );
+
+  const posizioneCorretta = ordine.indexOf(cartaRound);
+
+  if (posizione === posizioneCorretta) {
+    setMano(ordine);
+    setMessaggio("CORRETTO! Hai preso la carta");
+  } else {
+    setVite((v) => v - 1);
+    setMessaggio("SBAGLIATO! Hai perso una vita");
+  }
+
+  setFase("risultato");
+};
+
+if (fase === "round") {
+  return (
+    <SafeAreaView style={styles.center}>
+      <Text style={styles.titolo}>NUOVA SFIDA</Text>
+
+      <Text>Carte: {mano.length} / 6</Text>
+      <Text>Vite: {vite}</Text>
+
+      <Text style={{ fontSize: 22, color: "red" }}>
+        ⏳ {timer}s
+      </Text>
+
+      <Text style={{ marginVertical: 10 }}>
+        {cartaRound?.nome}
+      </Text>
+
+      <Button
+        title="Metti la carta qui"
+        onPress={() => controlla(1)}
+      />
+    </SafeAreaView>
+  );
+}
+
