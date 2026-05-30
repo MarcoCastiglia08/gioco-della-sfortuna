@@ -76,3 +76,27 @@ const [vite, setVite] = useState(3);
 const [timer, setTimer] = useState(30);
 const [messaggio, setMessaggio] = useState("");
 const [dbsm_temp, setDbsmTemp] = useState(0);
+
+
+const startGame = () => {
+  const iniziali = mescolaArray(CARTE)
+    .slice(0, 3)
+    .sort((a, b) => a.indice - b.indice);
+
+  setMano(iniziali);
+  setVite(3);
+  setMessaggio("");
+  setFase("gioco");
+};
+
+if (fase === "home") {
+  return (
+    <SafeAreaView style={styles.center}>
+      <Text style={styles.titolo}>Gioco della Sfortuna</Text>
+
+      <Button title="Inizia Partita" onPress={startGame} />
+    </SafeAreaView>
+  );
+}
+
+return null;
