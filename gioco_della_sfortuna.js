@@ -250,3 +250,17 @@ const controlla = (c) => {
 
 
 
+if (fase === "fine") {
+  return (
+    <SafeAreaView style={styles.center}>
+      <Text style={{ fontSize: 20 }}>
+        {messaggio}
+      </Text>
+
+      <Button
+        title="Ricomincia"
+        onPress={() => setFase("home")}
+      />
+    </SafeAreaView>
+  );
+}
