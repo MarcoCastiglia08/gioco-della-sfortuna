@@ -166,3 +166,48 @@ const controlla = (c) => {
 
   setFase("risultato");
 };
+
+
+useEffect(() => {
+  if (fase !== "round") return;
+
+  if (timer === 0) {
+    setVite(vite - 1);
+    setMessaggio("Tempo scaduto");
+    setFase("risultato");
+    return;
+  }
+
+  const t = setTimeout(() => {
+    setTimer(timer - 1);
+  }, 1000);
+
+  return () => clearTimeout(t);
+}, [timer, fase]);
+
+
+useEffect(() => {
+  if (vite === 0) {
+    setFase("fine");
+    setMessaggio("Hai perso");
+  }
+
+  if (mano.length === 6) {
+    setFase("fine");
+    setMessaggio("Hai vinto");
+  }
+}, [vite, mano]);
+
+
+if (fase === "fine") {
+  return (
+    <SafeAreaView style={styles.center}>
+      <Text>{messaggio}</Text>
+
+      <Button
+        title="Torna all'inizio"
+        onPress={() => setFase("home")}
+      />
+    </SafeAreaView>
+  );
+}
