@@ -191,3 +191,47 @@ if (fase === "round") {
   );
 }
 
+if (fase === "round") {
+  return (
+    <SafeAreaView style={styles.center}>
+      <Text style={styles.titolo}>NUOVA SFIDA</Text>
+
+      <Text>Carte: {mano.length} / 6</Text>
+      <Text>Vite: {vite}</Text>
+
+      <Text style={{ fontSize: 22, color: "red" }}>
+        ⏳ {timer}s
+      </Text>
+
+      <Text style={{ marginVertical: 10 }}>
+        {cartaRound?.nome}
+      </Text>
+
+      {mano.map((c, i) => (
+        <Button
+          key={c.id}
+          title={`Inserisci tra ${c.indice} e ${mano[i + 1]?.indice ?? "∞"}`}
+          onPress={() => controlla(i + 1)}
+        />
+      ))}
+    </SafeAreaView>
+  );
+}
+
+const controlla = (posizioneScelta) => {
+  const nuovaMano = [...mano, cartaRound].sort(
+    (a, b) => a.indice - b.indice
+  );
+
+  const posizioneCorretta = nuovaMano.indexOf(cartaRound);
+
+  if (posizioneScelta === posizioneCorretta) {
+    setMano(nuovaMano);
+    setMessaggio("CORRETTO! Hai preso la carta");
+  } else {
+    setVite((v) => v - 1);
+    setMessaggio("SBAGLIATO! Hai perso una vita");
+  }
+
+  setFase("risultato");
+};
