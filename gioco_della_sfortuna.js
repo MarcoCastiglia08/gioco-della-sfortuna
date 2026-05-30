@@ -100,3 +100,34 @@ if (fase === "home") {
 }
 
 return null;
+
+if (fase === "gioco") {
+  return (
+    <SafeAreaView style={styles.center}>
+      <Text style={styles.titolo}>Le tue carte</Text>
+
+      <Text>Carte: {mano.length} / 6</Text>
+      <Text>Vite: {vite}</Text>
+
+      {mano.map((c) => (
+        <Text key={c.id}>
+          {c.nome} ({c.indice})
+        </Text>
+      ))}
+
+      <Button title="Nuovo Round" onPress={nuovoRound} />
+    </SafeAreaView>
+  );
+}
+
+const nuovoRound = () => {
+  const disponibili = CARTE.filter(
+    (c) => !mano.find((x) => x.id === c.id)
+  );
+
+  const scelta = mescolaArray(disponibili)[0];
+
+  setCartaRound(scelta);
+  setTimer(30);
+  setFase("round");
+};
