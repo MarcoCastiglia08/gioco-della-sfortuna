@@ -211,3 +211,42 @@ if (fase === "fine") {
     </SafeAreaView>
   );
 }
+
+
+{messaggio !== "" && (
+  <Text style={{ marginVertical: 10 }}>
+    {messaggio}
+  </Text>
+)}
+
+if (fase === "risultato") {
+  return (
+    <SafeAreaView style={styles.center}>
+      <Text>{messaggio}</Text>
+
+      <Button
+        title="continua"
+        onPress={() => {
+          setFase("round");
+          setTimer(30);
+          setMessaggio("");
+        }}
+      />
+    </SafeAreaView>
+  );
+}
+
+const controlla = (c) => {
+  if (cartaRound.indice > c.indice) {
+    setMano([...mano, cartaRound]);
+    setMessaggio("giusto");
+  } else {
+    setVite(vite - 1);
+    setMessaggio("sbagliato");
+  }
+
+  setFase("risultato");
+};
+
+
+
