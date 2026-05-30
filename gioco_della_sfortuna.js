@@ -56,3 +56,15 @@ const CARTE = [
   { id: 49, nome: "Intesa Zero",                         immagine: require("./assets/card_49.png"), indice: 98.0 },
   { id: 50, nome: "10° Posto all'Ultima Giornata",       immagine: require("./assets/card_50.png"), indice: 99.5 },
 ];
+
+
+const mescolaArray = (arr) => [...arr].sort(() => Math.random() - 0.5);
+
+export default function App() {
+  const [fase, setFase] = useState("home");
+  const [mano, setMano] = useState([]);
+  const [cartaRound, setCartaRound] = useState(null);
+  const [vite, setVite] = useState(3);
+  const [timer, setTimer] = useState(30);
+  const [messaggio, setMessaggio] = useState("");
+}
