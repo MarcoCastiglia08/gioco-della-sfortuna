@@ -132,105 +132,36 @@ const nuovoRound = () => {
   setFase("round");
 };
 
-useEffect(() => {
-  if (fase !== "round") return;
-
-  if (timer === 0) {
-    setVite((v) => v - 1);
-    setMessaggio("Tempo scaduto! Hai perso una vita");
-    setFase("risultato");
-    return;
-  }
-
-  const intervallo = setInterval(() => {
-    setTimer((t) => t - 1);
-  }, 1000);
-
-  return () => clearInterval(intervallo);
-}, [fase, timer]);
-
-const controlla = (posizione) => {
-  const ordine = [...mano, cartaRound].sort(
-    (a, b) => a.indice - b.indice
-  );
-
-  const posizioneCorretta = ordine.indexOf(cartaRound);
-
-  if (posizione === posizioneCorretta) {
-    setMano(ordine);
-    setMessaggio("CORRETTO! Hai preso la carta");
-  } else {
-    setVite((v) => v - 1);
-    setMessaggio("SBAGLIATO! Hai perso una vita");
-  }
-
-  setFase("risultato");
-};
-
 if (fase === "round") {
   return (
     <SafeAreaView style={styles.center}>
-      <Text style={styles.titolo}>NUOVA SFIDA</Text>
+      <Text>Nuova situazione</Text>
 
-      <Text>Carte: {mano.length} / 6</Text>
       <Text>Vite: {vite}</Text>
+      <Text>{timer}</Text>
 
-      <Text style={{ fontSize: 22, color: "red" }}>
-        ⏳ {timer}s
-      </Text>
+      <Text>{cartaRound?.nome}</Text>
 
-      <Text style={{ marginVertical: 10 }}>
-        {cartaRound?.nome}
-      </Text>
+      <Text>Scegli una carta:</Text>
 
-      <Button
-        title="Metti la carta qui"
-        onPress={() => controlla(1)}
-      />
-    </SafeAreaView>
-  );
-}
-
-if (fase === "round") {
-  return (
-    <SafeAreaView style={styles.center}>
-      <Text style={styles.titolo}>NUOVA SFIDA</Text>
-
-      <Text>Carte: {mano.length} / 6</Text>
-      <Text>Vite: {vite}</Text>
-
-      <Text style={{ fontSize: 22, color: "red" }}>
-        ⏳ {timer}s
-      </Text>
-
-      <Text style={{ marginVertical: 10 }}>
-        {cartaRound?.nome}
-      </Text>
-
-      {mano.map((c, i) => (
+      {mano.map((c) => (
         <Button
           key={c.id}
-          title={`Inserisci tra ${c.indice} e ${mano[i + 1]?.indice ?? "∞"}`}
-          onPress={() => controlla(i + 1)}
+          title={c.nome}
+          onPress={() => controlla(c)}
         />
       ))}
     </SafeAreaView>
   );
 }
 
-const controlla = (posizioneScelta) => {
-  const nuovaMano = [...mano, cartaRound].sort(
-    (a, b) => a.indice - b.indice
-  );
-
-  const posizioneCorretta = nuovaMano.indexOf(cartaRound);
-
-  if (posizioneScelta === posizioneCorretta) {
-    setMano(nuovaMano);
-    setMessaggio("CORRETTO! Hai preso la carta");
+const controlla = (c) => {
+  if (cartaRound.indice > c.indice) {
+    setMano([...mano, cartaRound]);
+    setMessaggio("Giusto");
   } else {
-    setVite((v) => v - 1);
-    setMessaggio("SBAGLIATO! Hai perso una vita");
+    setVite(vite - 1);
+    setMessaggio("Sbagliato");
   }
 
   setFase("risultato");
